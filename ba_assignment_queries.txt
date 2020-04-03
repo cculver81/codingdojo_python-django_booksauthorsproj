@@ -15,29 +15,77 @@
 	a.create(first_name='William', last_name='Shakespeare')
 	a.create(first_name='Lau', last_name='Tzu')
 
-+ Add a new text field in the authors table called 'notes'.
-
-+ Create and run the migration files to update the table in your database.
-
 + Query: Change the name of the C Sharp book to C#
+	from books_authors_app.models import Book, Author
+	up_b=Book.objects.get(title='C Sharp')
+	up_b.title='C#'
+	up_b.save()
 
 + Query: Change the first name of the 4th author to Bill
+	up_a=Author.objects.get(id=4)
+	up_a.first_name='Bill'
+	up_a.save()
 
 + Query: Assign the first author to the first 2 books
+	b=Book.objects.get(id=1)
+	a=Author.objects.get(id=1)
+	b.authors.add(a)
+	b=Book.objects.get(id=2)
+	b.authors.add(a)
 
 + Query: Assign the second author to the first 3 books
+	b1=Book.objects.get(id=1)
+	b2=Book.objects.get(id=2)
+	b3=Book.objects.get(id=3)
+	b4=Book.objects.get(id=4)
+	b5=Book.objects.get(id=5)
+
+	a1=Author.objects.get(id=1)
+	a2=Author.objects.get(id=2)
+	a3=Author.objects.get(id=3)
+	a4=Author.objects.get(id=4)
+	a5=Author.objects.get(id=5)
+
+	a2.books.add(b1)
+	a2.books.add(b2)
+	a2.books.add(b3)
 
 + Query: Assign the third author to the first 4 books
+	a3.books.add(b1)
+	a3.books.add(b2)
+	a3.books.add(b3)
+	a3.books.add(b4)
 
 + Query: Assign the fourth author to the first 5 books (or in other words, all the books)
+	a4.books.add(b1)
+	a4.books.add(b2)
+	a4.books.add(b3)
+	a4.books.add(b4)
+	a4.books.add(b5)
 
 + Query: Retrieve all the authors for the 3rd book
-
+	for x in b3.authors.all():
+		print(f'{x.first_name} {x.last_name}')
+	
 + Query: Remove the first author of the 3rd book
+	del_auth=b3.authors.first()
+	del_auth.delete()
+	del_auth.save()
 
 + Query: Add the 5th author as one of the authors of the 2nd book
+	a5.books.add(b2)
 
 + Query: Find all the books that the 3rd author is part of
+	for x in a3.books.all():
+		print(x.title)
+OR
+	for x in Author.objects.get(id=3).books.all():
+		print(x.title)
 
 + Query: Find all the authors that contributed to the 5th book
+	for x in b5.authors.all():
+		print(x.first_name + ' ' + x.last_name)
+OR
+	for x in Book.objects.get(id=5).authors.all():
+		print(x.first_name + ' ' + x.last_name)
 
